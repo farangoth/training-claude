@@ -1,0 +1,16 @@
+{
+  "w1_Sun28 Jun": {
+    "completed": true,
+    "aiComment": "Avg HR of 144 bpm across 9.55 km with 252 m+ is a clean aerobic rebuild signal — the bulk of the run sat correctly in Z2. Lap data confirms excellent descent and flat-section discipline (km 1–5 avg 122–142 bpm), with HR drifting above ceiling only on the two steepest final pitches where walking would have been the correct tool. Power at 193 W avg with RPE 4/10 confirms the aerobic system is absorbing the load without undue stress. One precision fix for Monday: cadence was 79 spm — push for 81–83 spm on the flat recovery sections using a watch alert or metronome. That single change reduces ground contact time and begins building the leg turnover needed for the race.",
+    "result": {
+      "distance": "9.55 km",
+      "duration": "1h02 moving / 1h08 elapsed",
+      "elevation": "252 m+",
+      "avgHR": "144 bpm avg",
+      "peakHR": "174 bpm (final ascent km 9–9.5)",
+      "avgWatts": "193 W avg power",
+      "cadence": "79 spm avg · RPE 4/10",
+      "notes": "Lap breakdown: km 1–4 descent well-controlled (avg 122–140 bpm). Km 5 climb +82m, avg 142 bpm — correct. Km 6 harder pitch, avg 146 bpm, peak 164 bpm — first cap breach. Km 8 avg 156 bpm. Km 9–9.5 peak 174 bpm on steepest final pitch."
+    }
+  }
+}
