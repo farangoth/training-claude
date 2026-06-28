@@ -648,7 +648,7 @@ export default function App() {
   week.days.forEach(d => { weekSessions[d.day+d.date] = sessions[sessionKey(d)]; });
 
   return (
-    <div style={{ minHeight:"100vh", background:"#080b12", color:"#f1f5f9", fontFamily:"'Inter', system-ui, sans-serif", padding:"1.75rem 1.5rem", maxWidth:940, margin:"0 auto" }}>
+    <div style={{ minHeight:"100vh", background:"#080b12", color:"#f1f5f9", fontFamily:"Inter, system-ui, sans-serif", padding:"1.75rem 1.5rem", maxWidth:940, margin:"0 auto" }}>
 
       {/* Header */}
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:"1.5rem", flexWrap:"wrap", gap:"0.75rem" }}>
