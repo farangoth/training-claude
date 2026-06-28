@@ -350,7 +350,7 @@ Write a 2-3 sentence coaching debrief. Be direct, analytical, and specific to th
 
 // --- SUB-COMPONENTS -----------------------------------------------------------
 function Tag({ label, color }) {
-  return <span style={{ fontSize:"0.58rem", fontWeight:700, letterSpacing:"0.1em", color, border:`1px solid ${color}`, borderRadius:3, padding:"1px 6px", fontFamily:"monospace" }}>{label}</span>;
+  return <span style={{ fontSize:"0.58rem", fontWeight:700, letterSpacing:"0.1em", color, border:"1px solid " + color, borderRadius:3, padding:"1px 6px", fontFamily:"monospace" }}>{label}</span>;
 }
 
 function StatBox({ label, value }) {
@@ -370,7 +370,7 @@ function SyncBadge({ status }) {
     error:   { color:"#f87171", label:"x sync error" },
   }[status] || { color:"#64748b", label:" -- " };
   return (
-    <span style={{ fontSize:"0.55rem", fontFamily:"monospace", color: cfg.color, border:`1px solid ${cfg.color}40`, borderRadius:3, padding:"2px 6px" }}>
+    <span style={{ fontSize:"0.55rem", fontFamily:"monospace", color: cfg.color, border:"1px solid " + cfg.color + "40", borderRadius:3, padding:"2px 6px" }}>
       {cfg.label}
     </span>
   );
@@ -424,7 +424,7 @@ function DayModal({ day, sessionData, onClose, onLog, onUnlog }) {
 
   return (
     <div onClick={onClose} style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.8)", backdropFilter:"blur(8px)", display:"flex", alignItems:"center", justifyContent:"center", zIndex:100, padding:"1rem" }}>
-      <div onClick={e=>e.stopPropagation()} style={{ background:"#0d1018", border:`1px solid ${s.border}`, borderRadius:14, padding:"2rem", maxWidth:580, width:"100%", maxHeight:"88vh", overflowY:"auto", boxShadow:`0 0 60px ${s.border}25` }}>
+      <div onClick={e=>e.stopPropagation()} style={{ background:"#0d1018", border:"1px solid " + s.border, borderRadius:14, padding:"2rem", maxWidth:580, width:"100%", maxHeight:"88vh", overflowY:"auto", boxShadow:"0 0 60px " + s.border + "25" }}>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:"1.5rem" }}>
           <div>
             <div style={{ fontSize:"0.6rem", letterSpacing:"0.12em", color:s.accent, fontFamily:"monospace", marginBottom:5 }}>{day.day} * {day.date}</div>
@@ -480,7 +480,7 @@ function DayModal({ day, sessionData, onClose, onLog, onUnlog }) {
               </div>
             )}
             {d?.keyFocus && !showLog && (
-              <div style={{ background:s.bg, border:`1px solid ${s.border}`, borderRadius:8, padding:"0.9rem 1rem", marginBottom:"1.25rem" }}>
+              <div style={{ background:s.bg, border:"1px solid " + s.border, borderRadius:8, padding:"0.9rem 1rem", marginBottom:"1.25rem" }}>
                 <div style={{ fontSize:"0.58rem", color:s.accent, letterSpacing:"0.1em", fontFamily:"monospace", fontWeight:700, marginBottom:4 }}>COACH'S NOTE</div>
                 <div style={{ fontSize:"0.83rem", color:"#f1f5f9", lineHeight:1.6 }}>{d.keyFocus}</div>
               </div>
@@ -501,9 +501,9 @@ function DayTile({ day, sessionData, onClick }) {
   const s = TYPE_STYLES[isCompleted?"done":day.type] || TYPE_STYLES.easy;
   const result = sessionData?.result || day.result;
   return (
-    <button onClick={onClick} style={{ all:"unset", cursor:"pointer", display:"flex", flexDirection:"column", background:s.bg, border:`1px solid ${isCompleted?s.border:"#1a2030"}`, borderRadius:10, padding:"1rem", gap:"0.45rem", transition:"all 0.18s ease", textAlign:"left", position:"relative", overflow:"hidden", minHeight:130 }}
-      onMouseEnter={e=>{e.currentTarget.style.border=`1px solid ${s.border}`;e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow=`0 8px 28px ${s.border}22`;}}
-      onMouseLeave={e=>{e.currentTarget.style.border=isCompleted?`1px solid ${s.border}`:"1px solid #1a2030";e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="none";}}>
+    <button onClick={onClick} style={{ all:"unset", cursor:"pointer", display:"flex", flexDirection:"column", background:s.bg, border:"1px solid " + isCompleted?s.border:"#1a2030", borderRadius:10, padding:"1rem", gap:"0.45rem", transition:"all 0.18s ease", textAlign:"left", position:"relative", overflow:"hidden", minHeight:130 }}
+      onMouseEnter={e=>{e.currentTarget.style.border="1px solid "+s.border;e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 8px 28px "+s.border+"22";}}
+      onMouseLeave={e=>{e.currentTarget.style.border=isCompleted?"1px solid "+s.border:"1px solid #1a2030";e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="none";}}>
       <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:s.border, borderRadius:"10px 10px 0 0" }} />
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
         <div><span style={{ fontSize:"0.72rem", fontWeight:700, color:"#94a3b8", fontFamily:"monospace" }}>{day.day}</span><span style={{ fontSize:"0.62rem", color:"#475569", fontFamily:"monospace", marginLeft:6 }}>{day.date}</span></div>
@@ -533,7 +533,7 @@ function ProgressBar({ days, weekSessions }) {
         <span style={{ fontSize:"0.7rem", fontWeight:700, color:barColor, fontFamily:"monospace" }}>{done}/{completable} sessions * {pct}%</span>
       </div>
       <div style={{ height:6, background:"#1a2030", borderRadius:99, overflow:"hidden" }}>
-        <div style={{ height:"100%", width:`${pct}%`, background:barColor, borderRadius:99, transition:"width 0.5s ease", boxShadow:pct>0?`0 0 10px ${barColor}60`:"none" }} />
+        <div style={{ height:"100%", width:pct + "%", background:barColor, borderRadius:99, transition:"width 0.5s ease", boxShadow:pct>0?"0 0 10px "+barColor+"60":"none" }} />
       </div>
     </div>
   );
@@ -546,8 +546,8 @@ function WeekSelector({ weeks, currentIdx, onSelect }) {
         const pc=PHASE_COLORS[w.phase-1];
         const isActive=i===currentIdx;
         return (
-          <button key={i} onClick={()=>onSelect(i)} style={{ all:"unset", cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", padding:"0.45rem 0.65rem", borderRadius:7, border:`1px solid ${isActive?pc:"#1e2535"}`, background:isActive?`${pc}18`:"transparent", transition:"all 0.15s ease", minWidth:44 }}
-            onMouseEnter={e=>{if(!isActive){e.currentTarget.style.border=`1px solid ${pc}80`;e.currentTarget.style.background=`${pc}08`;}}}
+          <button key={i} onClick={()=>onSelect(i)} style={{ all:"unset", cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", padding:"0.45rem 0.65rem", borderRadius:7, border:isActive?"1px solid "+pc:"1px solid #1e2535", background:isActive?pc+"18":"transparent", transition:"all 0.15s ease", minWidth:44 }}
+            onMouseEnter={e=>{if(!isActive){e.currentTarget.style.border="1px solid "+pc+"80";e.currentTarget.style.background=pc+"08";}}}
             onMouseLeave={e=>{if(!isActive){e.currentTarget.style.border="1px solid #1e2535";e.currentTarget.style.background="transparent";}}}>
             <span style={{ fontSize:"0.6rem", fontWeight:700, color:isActive?pc:"#475569", fontFamily:"monospace" }}>W{w.number}</span>
             <span style={{ fontSize:"0.5rem", color:isActive?pc:"#334155", fontFamily:"monospace", textAlign:"center", lineHeight:1.2, marginTop:2, maxWidth:50 }}>{w.block.split(" ")[0]}</span>
@@ -667,7 +667,7 @@ export default function App() {
 
       {/* Phase track */}
       <div style={{ display:"flex", gap:"0.4rem", marginBottom:"1.25rem" }}>
-        {PHASE_LABELS.map((l,i)=>(<div key={i} style={{ flex:1, height:3, borderRadius:99, background:week.phase-1===i?PHASE_COLORS[i]:week.phase-1>i?`${PHASE_COLORS[i]}60`:"#1e2535", transition:"background 0.3s" }} />))}
+        {PHASE_LABELS.map((l,i)=>(<div key={i} style={{ flex:1, height:3, borderRadius:99, background:week.phase-1===i?PHASE_COLORS[i]:week.phase-1>i?PHASE_COLORS[i]+"60":"#1e2535", transition:"background 0.3s" }} />))}
       </div>
       <div style={{ display:"flex", gap:"1rem", marginBottom:"1.5rem" }}>
         {PHASE_LABELS.map((l,i)=>(<span key={i} style={{ fontSize:"0.55rem", color:week.phase-1===i?PHASE_COLORS[i]:"#334155", fontFamily:"monospace", letterSpacing:"0.06em", fontWeight:week.phase-1===i?700:400 }}>{l}</span>))}
@@ -677,7 +677,7 @@ export default function App() {
       <ProgressBar days={week.days} weekSessions={weekSessions} />
 
       {/* Week objective */}
-      <div style={{ background:`${phaseColor}09`, border:`1px solid ${phaseColor}30`, borderRadius:10, padding:"1.1rem 1.4rem", marginBottom:"1.5rem" }}>
+      <div style={{ background:phaseColor + "09", border:"1px solid " + phaseColor + "30", borderRadius:10, padding:"1.1rem 1.4rem", marginBottom:"1.5rem" }}>
         <div style={{ fontSize:"0.58rem", color:phaseColor, letterSpacing:"0.12em", fontFamily:"monospace", fontWeight:700, marginBottom:7 }}>WEEK OBJECTIVE</div>
         <p style={{ margin:0, fontSize:"0.85rem", color:"#cbd5e1", lineHeight:1.7 }}>{week.objective}</p>
         <div style={{ display:"flex", gap:"0.6rem", marginTop:"0.9rem", flexWrap:"wrap" }}>
