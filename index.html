@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clément Savalle-Anthonioz — Athlete Profile 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0d1117;
+    --surface:  #161b22;
+    --raised:   #1c2128;
+    --border:   #21262d;
+    --border2:  #30363d;
+    --text:     #e6edf3;
+    --dim:      #8b949e;
+    --muted:    #484f58;
+    --orange:   #e8773a;
+    --sage:     #3fb68f;
+    --red:      #e05252;
+    --amber:    #d4974a;
+    --teal:     #58a6ff;
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body:    'Inter', sans-serif;
+    --font-mono:    'JetBrains Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    height: 44px;
+    overflow-x: auto;
+  }
+  nav a {
+    color: var(--dim);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0 16px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  nav a:hover { color: var(--text); }
+  nav .nav-brand {
+    color: var(--orange);
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    margin-right: 12px;
+    border-bottom: none;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 52px 24px 0;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(42px, 7vw, 72px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .hero-name span { color: var(--orange); }
+  .hero-sub {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--dim);
+    margin-top: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  /* Career elevation profile SVG */
+  .career-chart {
+    margin: 32px 0 0;
+    width: 100%;
+    height: 140px;
+    position: relative;
+  }
+  .career-chart svg {
+    width: 100%;
+    height: 140px;
+    overflow: visible;
+  }
+
+  /* ── STAT STRIP ── */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 28px 0 0;
+  }
+  .stat-cell {
+    background: var(--surface);
+    padding: 16px 18px;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 4px;
+  }
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+  }
+  .stat-value.warn { color: var(--amber); }
+  .stat-value.ok   { color: var(--sage); }
+  .stat-sub {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 56px 24px 0;
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-head h2 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: var(--orange);
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border: 1px solid var(--orange);
+    border-radius: 3px;
+  }
+
+  /* ── ERA TIMELINE ── */
+  .era-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .era-row {
+    display: grid;
+    grid-template-columns: 130px 1fr auto;
+    gap: 0;
+    align-items: stretch;
+    cursor: pointer;
+  }
+  .era-date {
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-right: none;
+    border-radius: 6px 0 0 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .era-date-label {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .era-date-sub {
+    font-size: 10px;
+    color: var(--dim);
+    margin-top: 2px;
+  }
+  .era-body {
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: none;
+    border-right: none;
+  }
+  .era-title {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .era-detail {
+    font-size: 12px;
+    color: var(--dim);
+    line-height: 1.5;
+  }
+  .era-bullets {
+    margin-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .era-pill {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.06em;
+  }
+  .era-risk {
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--red);
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .era-fitness {
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: none;
+    border-radius: 0 6px 6px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+  }
+  .era-fitness-num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .era-fitness-label {
+    font-size: 9px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .era-bar {
+    display: flex;
+    gap: 2px;
+    margin-top: 8px;
+  }
+  .era-bar-seg {
+    width: 5px;
+    height: 3px;
+    border-radius: 2px;
+  }
+
+  /* ── STRENGTHS / WEAKNESSES ── */
+  .sw-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .sw-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .sw-card-head {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sw-item {
+    margin-bottom: 14px;
+  }
+  .sw-item-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .sw-item-name { font-size: 12px; font-weight: 600; color: var(--text); }
+  .sw-item-score { font-family: var(--font-mono); font-size: 11px; font-weight: 600; }
+  .sw-bar-track {
+    height: 4px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .sw-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .sw-item-note {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  /* ── PRIORITY STACK ── */
+  .priority-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 16px;
+  }
+  .priority-item {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .priority-item:last-child { border-bottom: none; }
+  .priority-badge {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 800;
+    flex-shrink: 0;
+    color: var(--bg);
+  }
+  .priority-text { font-size: 12px; color: var(--dim); flex: 1; }
+  .priority-level {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ── HR ZONES ── */
+  .hr-zones {
+    display: flex;
+    height: 52px;
+    border-radius: 6px;
+    overflow: hidden;
+    gap: 2px;
+    margin-bottom: 12px;
+  }
+  .hr-zone {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    position: relative;
+  }
+  .hr-zone-bpm { font-size: 10px; font-weight: 700; }
+  .hr-zone-name { font-size: 8px; opacity: 0.8; margin-top: 1px; }
+  .hr-marker {
+    background: var(--raised);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--dim);
+    line-height: 1.5;
+  }
+
+  /* ── RACE SECTION ── */
+  .race-header {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .race-stat { }
+  .race-stat-label { font-size: 10px; color: var(--dim); margin-bottom: 2px; }
+  .race-stat-value {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .race-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .race-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .race-card h3 {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .race-item {
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--dim);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .race-item-arrow { flex-shrink: 0; }
+  .dnf-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--dim);
+  }
+  .dnf-row:last-child { border-bottom: none; }
+  .dnf-level {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+
+  /* ── CURRENT BLOCK ── */
+  .week-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .week-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 0;
+    align-items: stretch;
+  }
+  .week-label {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-right: none;
+    border-radius: 6px 0 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .week-body {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: none;
+    border-right: none;
+    padding: 10px 16px;
+  }
+  .week-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .week-focus { font-size: 11px; color: var(--dim); margin-top: 1px; }
+  .week-tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: none;
+    border-radius: 0 6px 6px 0;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .week-badge {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  /* ── RECENT SESSIONS ── */
+  .session-bars {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    height: 100px;
+    padding: 0 4px;
+    margin: 16px 0 8px;
+  }
+  .session-bar-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .session-bar {
+    width: 100%;
+    max-width: 48px;
+    border-radius: 3px 3px 0 0;
+    position: relative;
+    cursor: default;
+    transition: opacity 0.15s;
+  }
+  .session-bar:hover { opacity: 0.85; }
+  .session-bar-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--dim);
+    text-align: center;
+    white-space: nowrap;
+  }
+  .session-bar-val {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2px;
+  }
+
+  /* ── PROGNOSIS ── */
+  .prognosis-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 16px;
+  }
+  .prognosis-col {
+    background: var(--surface);
+    padding: 18px;
+  }
+  .prognosis-col h4 {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .prognosis-item {
+    font-size: 12px;
+    color: var(--dim);
+    margin-bottom: 6px;
+    display: flex;
+    gap: 7px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    max-width: 960px;
+    margin: 56px auto 0;
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  footer p { font-size: 11px; color: var(--muted); }
+  footer .footer-mark {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--orange);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .sw-grid, .race-grid, .prognosis-split { grid-template-columns: 1fr; }
+    .era-row { grid-template-columns: 100px 1fr 64px; }
+    .era-detail { display: none; }
+    .stat-strip { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sw-bar-fill { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">CSA</a>
+  <a href="#eras">Career</a>
+  <a href="#sw">Strengths</a>
+  <a href="#current">Block</a>
+  <a href="#race">Race Day</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">Athlete Intelligence Report &nbsp;·&nbsp; 29 June 2026</p>
+  <h1 class="hero-name">Clément<br><span>Savalle-Anthonioz</span></h1>
+  <p class="hero-sub">Trail · Mountain · High Peak, England &nbsp;·&nbsp; Snowdon SkyRace 15 Aug 2026 &nbsp;·&nbsp; 38km / 3,150m+</p>
+
+  <!-- Career elevation SVG — signature element -->
+  <div class="career-chart" aria-label="Career fitness profile over time">
+    <svg viewBox="0 0 960 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#e8773a" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#e8773a" stop-opacity="0.02"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <!-- Contour fill area -->
+      <path d="M0,120 C60,120 80,30 160,25 C220,22 240,100 300,110 C360,118 400,115 440,115 C520,115 540,115 600,115 C640,115 660,50 720,42 C760,38 800,95 840,100 C880,104 920,88 960,75 L960,140 L0,140 Z"
+            fill="url(#grad)"/>
+      <!-- Contour lines (decorative parallels) -->
+      <path d="M0,128 C60,128 80,50 160,44 C220,40 240,110 300,118 C360,125 440,123 520,123 C600,123 640,64 720,56 C760,52 800,105 840,109 C880,113 920,98 960,86"
+            fill="none" stroke="#e8773a" stroke-width="0.4" stroke-opacity="0.2"/>
+      <path d="M0,136 C60,136 80,70 160,64 C220,60 240,120 300,126 C360,132 440,130 520,130 C600,130 640,78 720,70 C760,66 800,118 840,121 C880,124 920,110 960,100"
+            fill="none" stroke="#e8773a" stroke-width="0.3" stroke-opacity="0.12"/>
+      <!-- Main profile line -->
+      <path d="M0,120 C60,120 80,30 160,25 C220,22 240,100 300,110 C360,118 400,115 440,115 C520,115 540,115 600,115 C640,115 660,50 720,42 C760,38 800,95 840,100 C880,104 920,88 960,75"
+            fill="none" stroke="#e8773a" stroke-width="2" filter="url(#glow)"/>
+      <!-- Peak dots -->
+      <circle cx="160" cy="25" r="4" fill="#e8773a"/>
+      <circle cx="720" cy="42" r="4" fill="#e8773a" opacity="0.7"/>
+      <!-- Current position -->
+      <circle cx="870" cy="97" r="5" fill="#58a6ff"/>
+      <circle cx="870" cy="97" r="9" fill="none" stroke="#58a6ff" stroke-width="1.5" stroke-opacity="0.4"/>
+      <!-- Labels -->
+      <text x="155" y="16" font-family="'Barlow Condensed',sans-serif" font-size="10" fill="#e8773a" font-weight="700" text-anchor="middle">TARAWERA 2020</text>
+      <text x="720" y="33" font-family="'Barlow Condensed',sans-serif" font-size="10" fill="#e8773a" font-weight="700" opacity="0.8" text-anchor="middle">DEC 2025 PEAK</text>
+      <text x="870" y="88" font-family="'Barlow Condensed',sans-serif" font-size="10" fill="#58a6ff" font-weight="700" text-anchor="middle">NOW</text>
+      <!-- Year markers -->
+      <text x="0"   y="138" font-family="'JetBrains Mono',monospace" font-size="8" fill="#484f58">2019</text>
+      <text x="160" y="138" font-family="'JetBrains Mono',monospace" font-size="8" fill="#484f58" text-anchor="middle">2020</text>
+      <text x="440" y="138" font-family="'JetBrains Mono',monospace" font-size="8" fill="#484f58" text-anchor="middle">2022–24</text>
+      <text x="700" y="138" font-family="'JetBrains Mono',monospace" font-size="8" fill="#484f58" text-anchor="middle">2025</text>
+      <text x="955" y="138" font-family="'JetBrains Mono',monospace" font-size="8" fill="#58a6ff" text-anchor="end">2026</text>
+    </svg>
+  </div>
+
+  <!-- Stat strip -->
+  <div class="stat-strip">
+    <div class="stat-cell">
+      <div class="stat-label">Race Readiness</div>
+      <div class="stat-value warn">3/10</div>
+      <div class="stat-sub">Week 1 of 7</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">HM Personal Best</div>
+      <div class="stat-value ok">1:35</div>
+      <div class="stat-sub">V̇O₂max ~60 mL/kg/min</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Functional AeT</div>
+      <div class="stat-value warn">~155 bpm</div>
+      <div class="stat-sub">drifted — was ~145</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Z2 Ceiling (LT2)</div>
+      <div class="stat-value">163 bpm</div>
+      <div class="stat-sub">8–19 bpm margin</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Cycling FTP</div>
+      <div class="stat-value ok">200 W</div>
+      <div class="stat-sub">2.86 W/kg @ 70kg</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Max HR</div>
+      <div class="stat-value">196 bpm</div>
+      <div class="stat-sub">Coros Pace 2</div>
+    </div>
+  </div>
+</div>
+
+<!-- CAREER ERAS -->
+<section id="eras">
+  <div class="section-head">
+    <h2>Career Eras</h2>
+    <span class="section-tag">9-year history</span>
+  </div>
+
+  <div class="era-grid">
+
+    <!-- Era 1 -->
+    <div class="era-row">
+      <div class="era-date" style="border-left: 3px solid #3fb68f;">
+        <div class="era-date-label">Pre-2020</div>
+        <div class="era-date-sub">Tarawera Build</div>
+      </div>
+      <div class="era-body">
+        <div class="era-title" style="color:#3fb68f;">Peak Fitness</div>
+        <div class="era-detail">Volume reached ~80 km/week. HM PR 1:35. Alpine background (Haute-Savoie) built a genuine aerobic ceiling. V̇O₂max estimated 58–62 mL/kg/min.</div>
+        <div class="era-bullets">
+          <span class="era-pill" style="background:#3fb68f18;color:#3fb68f;border:1px solid #3fb68f44;">80 km/wk peak</span>
+          <span class="era-pill" style="background:#3fb68f18;color:#3fb68f;border:1px solid #3fb68f44;">Tarawera 50km finisher</span>
+          <span class="era-pill" style="background:#3fb68f18;color:#3fb68f;border:1px solid #3fb68f44;">1:35 HM</span>
+        </div>
+        <div class="era-risk"><span>⚠</span><span>ITB onset at 20km — ~50% low-intensity distribution vs 80% recommended. Missing muscular endurance work. Insufficient recovery between efforts.</span></div>
+      </div>
+      <div class="era-fitness" style="border-left:3px solid #3fb68f18;">
+        <div class="era-fitness-num" style="color:#3fb68f;">9</div>
+        <div class="era-fitness-label">Fitness</div>
+        <div class="era-bar" id="bar-1"></div>
+      </div>
+    </div>
+
+    <!-- Era 2 -->
+    <div class="era-row">
+      <div class="era-date" style="border-left: 3px solid #e05252;">
+        <div class="era-date-label">2020–2024</div>
+        <div class="era-date-sub">Post-Tarawera</div>
+      </div>
+      <div class="era-body">
+        <div class="era-title" style="color:#e05252;">Boom-Bust Cycle</div>
+        <div class="era-detail">Scattered 6–8 km runs separated by multi-week gaps. No structured long run. No minimum training floor. Life load (young child, career) eliminated training entirely when disrupted rather than falling to a manageable baseline.</div>
+        <div class="era-bullets">
+          <span class="era-pill" style="background:#e0525218;color:#e05252;border:1px solid #e0525244;">Multi-week gaps</span>
+          <span class="era-pill" style="background:#e0525218;color:#e05252;border:1px solid #e0525244;">No long run</span>
+          <span class="era-pill" style="background:#e0525218;color:#e05252;border:1px solid #e0525244;">AeT drifting</span>
+        </div>
+        <div class="era-risk"><span>⚠</span><span>No minimum effective floor. Life disruption = complete collapse instead of reduced load.</span></div>
+      </div>
+      <div class="era-fitness" style="border-left:3px solid #e0525218;">
+        <div class="era-fitness-num" style="color:#e05252;">4</div>
+        <div class="era-fitness-label">Fitness</div>
+        <div class="era-bar" id="bar-2"></div>
+      </div>
+    </div>
+
+    <!-- Era 3 -->
+    <div class="era-row">
+      <div class="era-date" style="border-left: 3px solid #d4974a;">
+        <div class="era-date-label">Sep–Dec 2025</div>
+        <div class="era-date-sub">Best Rebuild</div>
+      </div>
+      <div class="era-body">
+        <div class="era-title" style="color:#d4974a;">Structured Return</div>
+        <div class="era-detail">Best recent block. 29.4 km Around Ladybower long run. 25.9 km Frozen Edale with 1,165m+. Real quality sessions: 6×1km @4:00, 30/30 uphill intervals. S&C briefly present Oct–Nov.</div>
+        <div class="era-bullets">
+          <span class="era-pill" style="background:#d4974a18;color:#d4974a;border:1px solid #d4974a44;">29km long run</span>
+          <span class="era-pill" style="background:#d4974a18;color:#d4974a;border:1px solid #d4974a44;">6×1km @ 4:00/km</span>
+          <span class="era-pill" style="background:#d4974a18;color:#d4974a;border:1px solid #d4974a44;">Uphill 30/30 blocks</span>
+        </div>
+        <div class="era-risk"><span>⚠</span><span>No taper, no macro periodization. No recovery weeks visible. S&C vanished December. Block terminated abruptly in January.</span></div>
+      </div>
+      <div class="era-fitness" style="border-left:3px solid #d4974a18;">
+        <div class="era-fitness-num" style="color:#d4974a;">7</div>
+        <div class="era-fitness-label">Fitness</div>
+        <div class="era-bar" id="bar-3"></div>
+      </div>
+    </div>
+
+    <!-- Era 4 -->
+    <div class="era-row">
+      <div class="era-date" style="border-left: 3px solid #e05252;">
+        <div class="era-date-label">Jan–May 2026</div>
+        <div class="era-date-sub">Running gap</div>
+      </div>
+      <div class="era-body">
+        <div class="era-title" style="color:#e05252;">The Collapse</div>
+        <div class="era-detail">Last run 9 Feb. Resumed 17 May — a ~3-month running gap. Hiking maintained some eccentric load tolerance (15km/1088m+ on best days). FTP 200W maintained via Zwift and Alpine ski week (Feb 7–12, Haute-Savoie).</div>
+        <div class="era-bullets">
+          <span class="era-pill" style="background:#e0525218;color:#e05252;border:1px solid #e0525244;">~3 month gap</span>
+          <span class="era-pill" style="background:#d4974a18;color:#d4974a;border:1px solid #d4974a44;">FTP 200W held</span>
+          <span class="era-pill" style="background:#d4974a18;color:#d4974a;border:1px solid #d4974a44;">Hiking base preserved</span>
+        </div>
+        <div class="era-risk"><span>⚠</span><span>AeT drifted to functional ~155bpm ceiling. Running-specific vertical load near zero. S&C entirely absent.</span></div>
+      </div>
+      <div class="era-fitness" style="border-left:3px solid #e0525218;">
+        <div class="era-fitness-num" style="color:#e05252;">3</div>
+        <div class="era-fitness-label">Fitness</div>
+        <div class="era-bar" id="bar-4"></div>
+      </div>
+    </div>
+
+    <!-- Era 5 -->
+    <div class="era-row">
+      <div class="era-date" style="border-left: 3px solid #58a6ff;">
+        <div class="era-date-label">Jun 2026 →</div>
+        <div class="era-date-sub">Snowdon Block</div>
+      </div>
+      <div class="era-body">
+        <div class="era-title" style="color:#58a6ff;">Week 1 — Controlled Reentry</div>
+        <div class="era-detail">28 Jun session: 9.5km / 252m+ / ~144bpm avg. Walk protocol on steep gradients correctly executed. HR ceiling breaches on moderate terrain — primary correction for Week 2. S&C restart this week is non-negotiable.</div>
+        <div class="era-bullets">
+          <span class="era-pill" style="background:#58a6ff18;color:#58a6ff;border:1px solid #58a6ff44;">144bpm avg ✓</span>
+          <span class="era-pill" style="background:#58a6ff18;color:#58a6ff;border:1px solid #58a6ff44;">Walk protocol correct</span>
+          <span class="era-pill" style="background:#e0525218;color:#e05252;border:1px solid #e0525244;">Moderate terrain breach</span>
+        </div>
+        <div class="era-risk"><span>⚠</span><span>AeT gap narrows Z2 margin to 8–19bpm. No S&C for 7+ months. Left knee ITB risk elevated on descents.</span></div>
+      </div>
+      <div class="era-fitness" style="border-left:3px solid #58a6ff44;">
+        <div class="era-fitness-num" style="color:#58a6ff;">3</div>
+        <div class="era-fitness-label">Fitness</div>
+        <div class="era-bar" id="bar-5"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STRENGTHS & WEAKNESSES -->
+<section id="sw">
+  <div class="section-head">
+    <h2>Strengths &amp; Weaknesses</h2>
+    <span class="section-tag">Current state</span>
+  </div>
+
+  <div class="sw-grid">
+    <!-- Strengths -->
+    <div class="sw-card">
+      <div class="sw-card-head" style="color:#3fb68f;">✓ &nbsp;Strengths</div>
+
+      <div class="sw-item">
+        <div class="sw-item-top">
+          <span class="sw-item-name">Mountain Movement</span>
+          <span class="sw-item-score" style="color:#3fb68f;">9/10</span>
+        </div>
+        <div class="sw-bar-track"><div class="sw-bar-fill" style="width:90%;background:#3fb68f;"></div></div>
+        <div class="sw-item-note">Haute-Savoie upbringing · Tryfan · Kinder/Bleaklow navigation. Not coachable in 7 weeks.</div>
+      </div>
+
+      <div class="sw-item">
+        <div class="sw-item-top">
+          <span class="sw-item-name">Aerobic Ceiling</span>
+          <span class="sw-item-score" style="color:#3fb68f;">8/10</span>
+        </div>
+        <div class="sw-bar-track"><div class="sw-bar-fill" style="width:80%;background:#3fb68f;"></div></div>
+        <div class="sw-item-note">1:35 HM · 50km finisher · cardiac adaptation is durable. Engine dormant, not destroyed.</div>
+      </div>
+
+      <div class="sw-item">
+        <div class="sw-item-top">
+          <span class="sw-item-name">Polarised Instinct</span>
+          <span class="sw-item-score" style="color:#3fb68f;">8/10</span>
+        </div>
+        <div class="sw-bar-track"><div class="sw-bar-fill" style="width:80%;background:#3fb68f;"></div></div>
+        <div class="sw-item-note">Easy stays genuinely easy. No grey-zone habit. Alpine background built implicit effort gradation.</div>
+      </div>
+
+      <div class="sw-item">
+        <div class="sw-item-top">
+          <span class="sw-item-name">Cycling FTP Floor</span>
+          <span class="sw-item-score" style="color:#3fb68f;">7/10</span>
+        </div>
+        <div class="sw-bar-track"><div class="sw-bar-fill" style="width:70%;background:#3fb68f;"></div></div>
+        <div class="sw-item-note">200W / 2.86 W/kg. Gravel rides and Zwift buffered cardiac deconditioning during gap.</div>
+      </div>
+
+      <div class="sw-item">
+        <div class="sw-item-top">
+          <span class="sw-item-name">Coaching Self-Awareness</span>
+          <span class="sw-item-score" style="color:#3fb68f;">8/10</span>
+        </div>
+        <div class="sw-bar-track"><div class="sw-bar-fill" style="width:80%;background:#3fb68f;"></div></div>
+        <div class="sw-item-note">Can name Tarawera failure modes precisely. Self-awareness is a prerequisite for change.</div>
+      </div>
+    </div>
+
+    <!-- Weaknesses -->
+    <div class="sw-card">
+      <div class="sw-card-head" style="color:#e05252;">✗ &nbsp;Weaknesses (severity)</div>
+
+      <div class="sw-item">
+        <div class="sw-item-top">
+          <span class="sw-item-name">AeT Drift</span>
+          <span class="sw-item-score" style="color:#e05252;">9/10</span>
+        </div>
+        <div class="sw-bar-track"><div class="sw-bar-fill" style="width:90%;background:#e05252;"></div></div>
+        <div class="sw-item-note">Easy HR ~144–155 bpm. Z2 ceiling at 163. Only 8–19 bpm margin. Primary limiter right now.</div>
+      </div>
+
+      <div class="sw-item">
+        <div class="sw-item-top">
+          <span class="sw-item-name">Boom-Bust Pattern</span>
+          <span class="sw-item-score" style="color:#e05252;">8/10</span>
+        </div>
+        <div class="sw-bar-track"><div class="sw-bar-fill" style="width:80%;background:#e05252;"></div></div>
+        <div class="sw-item-note">No minimum floor. Life disruption → complete collapse. Minimum effective week must be internalized.</div>
+      </div>
+
+      <div class="sw-item">
+        <div class="sw-item-top">
+          <span class="sw-item-name">Vertical Load</span>
+          <span class="sw-item-score" style="color:#e05252;">9/10</span>
+        </div>
+        <div class="sw-bar-track"><div class="sw-bar-fill" style="width:90%;background:#e05252;"></div></div>
+        <div class="sw-item-note">252m recent max vs 3,150m+ race demand. Jacob's Ladder sessions are the critical stimulus.</div>
+      </div>
+
+      <div class="sw-item">
+        <div class="sw-item-top">
+          <span class="sw-item-name">S&amp;C Absence</span>
+          <span class="sw-item-score" style="color:#e05252;">8/10</span>
+        </div>
+        <div class="sw-bar-track"><div class="sw-bar-fill" style="width:80%;background:#e05252;"></div></div>
+        <div class="sw-item-note">Last session November 2025. 7+ months gap. Primary ITB prevention lever is dormant.</div>
+      </div>
+
+      <div class="sw-item">
+        <div class="sw-item-top">
+          <span class="sw-item-name">ITB / Descent Risk</span>
+          <span class="sw-item-score" style="color:#e05252;">7/10</span>
+        </div>
+        <div class="sw-bar-track"><div class="sw-bar-fill" style="width:70%;background:#e05252;"></div></div>
+        <div class="sw-item-note">Left knee. Emerged at Tarawera 20km. 5+ months without running descent load. Race has technical downhill.</div>
+      </div>
+
+      <div class="sw-item">
+        <div class="sw-item-top">
+          <span class="sw-item-name">No Race Intensity</span>
+          <span class="sw-item-score" style="color:#e05252;">7/10</span>
+        </div>
+        <div class="sw-bar-track"><div class="sw-bar-fill" style="width:70%;background:#e05252;"></div></div>
+        <div class="sw-item-note">Last quality session Dec 2025. LT2 reintroduction must wait until Week 4 and be carefully dosed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Priority stack -->
+  <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;margin-top:28px;margin-bottom:0;">Priority Action Stack</h3>
+  <div class="priority-list">
+    <div class="priority-item">
+      <div class="priority-badge" style="background:#e05252;">1</div>
+      <div class="priority-text">Restart Strength A (hip/glute) this week — protected session, not filler. The ITB prevention lever must be active before vertical load increases.</div>
+      <div class="priority-level" style="background:#e0525218;color:#e05252;border:1px solid #e0525244;">CRITICAL</div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-badge" style="background:#e05252;">2</div>
+      <div class="priority-text">155 bpm hard cap on every session — including moderate gradients. Walk earlier than feels necessary.</div>
+      <div class="priority-level" style="background:#e0525218;color:#e05252;border:1px solid #e0525244;">CRITICAL</div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-badge" style="background:#d4974a;">3</div>
+      <div class="priority-text">Saturday long run is non-negotiable — minimum effective week floor. Nothing replaces it.</div>
+      <div class="priority-level" style="background:#d4974a18;color:#d4974a;border:1px solid #d4974a44;">HIGH</div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-badge" style="background:#d4974a;">4</div>
+      <div class="priority-text">Progressive vertical load from Week 3 — Jacob's Ladder via Edale. First descent monitoring session before Week 4 uphill intervals.</div>
+      <div class="priority-level" style="background:#d4974a18;color:#d4974a;border:1px solid #d4974a44;">HIGH</div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-badge" style="background:#484f58;">5</div>
+      <div class="priority-text">Monitor left knee on all descents. Walk at the first sign of lateral tightness — do not push through.</div>
+      <div class="priority-level" style="background:#48485818;color:#8b949e;border:1px solid #48485844;">ONGOING</div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRENT BLOCK -->
+<section id="current">
+  <div class="section-head">
+    <h2>7-Week Block</h2>
+    <span class="section-tag">Snowdon build</span>
+  </div>
+
+  <!-- Recent sessions bar chart -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:16px;">
+    <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px;">Recent Sessions — Distance (km)</div>
+    <div class="session-bars">
+      <div class="session-bar-wrap">
+        <div class="session-bar-val" style="color:#484f58;">13.8</div>
+        <div class="session-bar" style="height:82%;background:#484f5866;"></div>
+        <div class="session-bar-label">14 Jun</div>
+      </div>
+      <div class="session-bar-wrap">
+        <div class="session-bar-val" style="color:#484f58;">6.8</div>
+        <div class="session-bar" style="height:41%;background:#484f5866;"></div>
+        <div class="session-bar-label">16 Jun</div>
+      </div>
+      <div class="session-bar-wrap">
+        <div class="session-bar-val" style="color:#484f58;">7.0</div>
+        <div class="session-bar-val" style="color:#484f58;"></div>
+        <div class="session-bar" style="height:42%;background:#484f5866;"></div>
+        <div class="session-bar-label">20 Jun</div>
+      </div>
+      <div class="session-bar-wrap">
+        <div class="session-bar-val" style="color:#d4974a;">9.1</div>
+        <div class="session-bar" style="height:54%;background:#d4974a88;"></div>
+        <div class="session-bar-label">21 Jun</div>
+      </div>
+      <div class="session-bar-wrap">
+        <div class="session-bar-val" style="color:#484f58;">4.8</div>
+        <div class="session-bar" style="height:29%;background:#484f5866;"></div>
+        <div class="session-bar-label">26 Jun</div>
+      </div>
+      <div class="session-bar-wrap">
+        <div class="session-bar-val" style="color:#484f58;">5.4</div>
+        <div class="session-bar" style="height:32%;background:#484f5866;"></div>
+        <div class="session-bar-label">27 Jun</div>
+      </div>
+      <div class="session-bar-wrap">
+        <div class="session-bar-val" style="color:#58a6ff;">9.5</div>
+        <div class="session-bar" style="height:57%;background:#58a6ff;box-shadow:0 0 8px #58a6ff44;"></div>
+        <div class="session-bar-label" style="color:#58a6ff;">28 Jun ★</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;">
+      <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:#58a6ff;"></div><span style="font-size:10px;color:var(--muted);">Week 1 opener (with HR)</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:#d4974a88;"></div><span style="font-size:10px;color:var(--muted);">Hike</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:#484f5866;"></div><span style="font-size:10px;color:var(--muted);">Run</span></div>
+    </div>
+  </div>
+
+  <!-- HR Zones -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:16px;">
+    <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;">Heart Rate Zone Map</div>
+    <div class="hr-zones">
+      <div class="hr-zone" style="background:#3fb68f18;border:1px solid #3fb68f33;color:#3fb68f;">
+        <div class="hr-zone-bpm">0–131</div>
+        <div class="hr-zone-name">Z1 Recovery</div>
+      </div>
+      <div class="hr-zone" style="background:#58a6ff18;border:1px solid #58a6ff33;color:#58a6ff;flex:2;">
+        <div class="hr-zone-bpm">132–163</div>
+        <div class="hr-zone-name">Z2 Aerobic</div>
+      </div>
+      <div class="hr-zone" style="background:#d4974a18;border:1px solid #d4974a33;color:#d4974a;">
+        <div class="hr-zone-bpm">164–179</div>
+        <div class="hr-zone-name">Z3 Tempo</div>
+      </div>
+      <div class="hr-zone" style="background:#e0525218;border:1px solid #e0525233;color:#e05252;">
+        <div class="hr-zone-bpm">180–195</div>
+        <div class="hr-zone-name">Z4 Threshold</div>
+      </div>
+      <div class="hr-zone" style="background:#9f7aea18;border:1px solid #9f7aea33;color:#9f7aea;">
+        <div class="hr-zone-bpm">196+</div>
+        <div class="hr-zone-name">Z5 Max</div>
+      </div>
+    </div>
+    <div class="hr-marker">
+      Current easy trail run sits at <strong style="color:#d4974a;">~144–155 bpm</strong> — inside Z2 but only <strong style="color:#d4974a;">8–19 bpm</strong> below the ceiling. Any gradient above ~10–12% risks drifting into Z3 without intention. Hard cap: <strong style="color:#e05252;">155 bpm</strong> through Week 3.
+    </div>
+  </div>
+
+  <!-- Week structure -->
+  <div class="week-grid">
+    <div class="week-row">
+      <div class="week-label" style="color:#58a6ff;border-color:#58a6ff44;background:#58a6ff08;">WK 1</div>
+      <div class="week-body" style="border-color:#58a6ff44;background:#58a6ff05;">
+        <div class="week-name">Aerobic Rebuild — Reentry</div>
+        <div class="week-focus">HR ≤155 bpm absolute · Strength A restart · Jacob's Ladder first look</div>
+      </div>
+      <div class="week-tag" style="border-color:#58a6ff44;background:#58a6ff08;">
+        <div class="week-badge" style="background:#58a6ff18;color:#58a6ff;border:1px solid #58a6ff66;">NOW</div>
+      </div>
+    </div>
+    <div class="week-row">
+      <div class="week-label" style="color:var(--dim);">WK 2</div>
+      <div class="week-body">
+        <div class="week-name">Aerobic Rebuild — Load +10%</div>
+        <div class="week-focus">HR ≤155 strict · First proper Jacob's Ladder session · Descent intro</div>
+      </div>
+      <div class="week-tag"><div class="week-badge" style="color:var(--muted);border:1px solid var(--border);">SOON</div></div>
+    </div>
+    <div class="week-row">
+      <div class="week-label" style="color:var(--dim);">WK 3</div>
+      <div class="week-body">
+        <div class="week-name">Aerobic Rebuild — Volume peak</div>
+        <div class="week-focus">Load +10% again · Descent volume progressed · Kinder long run</div>
+      </div>
+      <div class="week-tag"><div class="week-badge" style="color:var(--muted);border:1px solid var(--border);">SOON</div></div>
+    </div>
+    <div class="week-row">
+      <div class="week-label" style="color:#d4974a;">WK 4</div>
+      <div class="week-body">
+        <div class="week-name">Vertical Loading Phase</div>
+        <div class="week-focus">HR ceiling → 163 bpm · Uphill interval sessions begin · Kinder prescribed</div>
+      </div>
+      <div class="week-tag"><div class="week-badge" style="background:#d4974a18;color:#d4974a;border:1px solid #d4974a44;">LOAD</div></div>
+    </div>
+    <div class="week-row">
+      <div class="week-label" style="color:#d4974a;">WK 5</div>
+      <div class="week-body">
+        <div class="week-name">Australia Travel — London → Sydney</div>
+        <div class="week-focus">Hotel treadmill incline · Stairs · Bodyweight S&amp;C · Maintain, don't build</div>
+      </div>
+      <div class="week-tag"><div class="week-badge" style="background:#d4974a18;color:#d4974a;border:1px solid #d4974a44;">TRAVEL</div></div>
+    </div>
+    <div class="week-row">
+      <div class="week-label" style="color:var(--muted);">WK 6</div>
+      <div class="week-body">
+        <div class="week-name">Taper — Volume –50%</div>
+        <div class="week-focus">Quality maintained at reduced volume · No new stimulus · Sleep priority</div>
+      </div>
+      <div class="week-tag"><div class="week-badge" style="color:var(--muted);border:1px solid var(--border);">TAPER</div></div>
+    </div>
+    <div class="week-row">
+      <div class="week-label" style="color:var(--muted);">WK 7</div>
+      <div class="week-body">
+        <div class="week-name">Race Taper — ≤30% volume</div>
+        <div class="week-focus">Taper complete by 13 Aug (SafetyCulture calendar) · Race 15 Aug</div>
+      </div>
+      <div class="week-tag"><div class="week-badge" style="color:var(--muted);border:1px solid var(--border);">TAPER</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RACE DAY -->
+<section id="race">
+  <div class="section-head">
+    <h2>Race Day</h2>
+    <span class="section-tag">15 August 2026</span>
+  </div>
+
+  <div class="race-header">
+    <div class="race-stat">
+      <div class="race-stat-label">Race</div>
+      <div class="race-stat-value">Snowdon SkyRace</div>
+    </div>
+    <div class="race-stat">
+      <div class="race-stat-label">Distance</div>
+      <div class="race-stat-value">38 km</div>
+    </div>
+    <div class="race-stat">
+      <div class="race-stat-label">Elevation</div>
+      <div class="race-stat-value">3,150 m+</div>
+    </div>
+    <div class="race-stat">
+      <div class="race-stat-label">Target finish</div>
+      <div class="race-stat-value" style="color:#d4974a;">5:30–6:30</div>
+    </div>
+    <div class="race-stat">
+      <div class="race-stat-label">Shoe</div>
+      <div class="race-stat-value" style="font-size:14px;color:var(--dim);">Merrell MTL Long Sky</div>
+    </div>
+  </div>
+
+  <div class="race-grid">
+    <div class="race-card">
+      <h3 style="color:#3fb68f;">Race Strategy</h3>
+      <div class="race-item"><span class="race-item-arrow" style="color:#3fb68f;">→</span><span>Walk ALL climbs above 15% gradient in the first half — no exceptions</span></div>
+      <div class="race-item"><span class="race-item-arrow" style="color:#3fb68f;">→</span><span>HR discipline: under 155–158 bpm for first 20 km</span></div>
+      <div class="race-item"><span class="race-item-arrow" style="color:#3fb68f;">→</span><span>Treat it as a big mountain day — not a race</span></div>
+      <div class="race-item"><span class="race-item-arrow" style="color:#3fb68f;">→</span><span>Eat at 20 minutes and every 30–40 min thereafter</span></div>
+      <div class="race-item"><span class="race-item-arrow" style="color:#3fb68f;">→</span><span>Walk descents at first quad fatigue or lateral knee twinge</span></div>
+      <div class="race-item"><span class="race-item-arrow" style="color:#3fb68f;">→</span><span>Mountain competence closes the gap vs fitness deficit</span></div>
+    </div>
+
+    <div class="race-card">
+      <h3 style="color:#e05252;">DNF Risk Factors</h3>
+      <div class="dnf-row">
+        <span>ITB flare (left knee, descent)</span>
+        <div class="dnf-level" style="background:#e0525218;color:#e05252;border:1px solid #e0525244;">HIGH</div>
+      </div>
+      <div class="dnf-row">
+        <span>Starting too fast on early climbs</span>
+        <div class="dnf-level" style="background:#e0525218;color:#e05252;border:1px solid #e0525244;">HIGH</div>
+      </div>
+      <div class="dnf-row">
+        <span>HR blow-up on Snowdon ridge</span>
+        <div class="dnf-level" style="background:#d4974a18;color:#d4974a;border:1px solid #d4974a44;">MED</div>
+      </div>
+      <div class="dnf-row">
+        <span>Fuelling failure on 6-hour effort</span>
+        <div class="dnf-level" style="background:#d4974a18;color:#d4974a;border:1px solid #d4974a44;">MED</div>
+      </div>
+      <div class="dnf-row">
+        <span>Technical descent slip on wet rock</span>
+        <div class="dnf-level" style="background:#3fb68f18;color:#3fb68f;border:1px solid #3fb68f44;">LOW</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;">
+    <div class="prognosis-split">
+      <div class="prognosis-col">
+        <h4 style="color:#3fb68f;">✓ &nbsp;7 weeks CAN deliver</h4>
+        <div class="prognosis-item"><span style="color:#3fb68f;flex-shrink:0;">·</span><span>Running economy restored</span></div>
+        <div class="prognosis-item"><span style="color:#3fb68f;flex-shrink:0;">·</span><span>Descent confidence gradually rebuilt</span></div>
+        <div class="prognosis-item"><span style="color:#3fb68f;flex-shrink:0;">·</span><span>Hip stabilisers reactivated</span></div>
+        <div class="prognosis-item"><span style="color:#3fb68f;flex-shrink:0;">·</span><span>1–2 meaningful vertical sessions in legs</span></div>
+        <div class="prognosis-item"><span style="color:#3fb68f;flex-shrink:0;">·</span><span>S&amp;C foundation rebuilt</span></div>
+        <div class="prognosis-item"><span style="color:#3fb68f;flex-shrink:0;">·</span><span>Race-day strategy confidence</span></div>
+      </div>
+      <div class="prognosis-col">
+        <h4 style="color:#e05252;">✗ &nbsp;Cannot fix in time</h4>
+        <div class="prognosis-item"><span style="color:#e05252;flex-shrink:0;">·</span><span>Full AeT recalibration (needs 8–12 wks)</span></div>
+        <div class="prognosis-item"><span style="color:#e05252;flex-shrink:0;">·</span><span>Deep muscular endurance base</span></div>
+        <div class="prognosis-item"><span style="color:#e05252;flex-shrink:0;">·</span><span>Altitude adaptation</span></div>
+        <div class="prognosis-item"><span style="color:#e05252;flex-shrink:0;">·</span><span>Structural ITB resolution</span></div>
+        <div class="prognosis-item"><span style="color:#e05252;flex-shrink:0;">·</span><span>Fitness ceiling recovery</span></div>
+        <div class="prognosis-item"><span style="color:#e05252;flex-shrink:0;">·</span><span>Race-pace specificity</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Training for the Uphill Athlete · House, Johnston, Jornet · Polarised 80/20 · AeT-anchored · Continuity / Gradualness / Modulation</p>
+  <p class="footer-mark">CSA · ATHLETE REPORT · JUN 2026</p>
+</footer>
+
+<script>
+  // Animate fitness bars on page load
+  function renderBars() {
+    const barData = {
+      'bar-1': { score: 9, color: '#3fb68f' },
+      'bar-2': { score: 4, color: '#e05252' },
+      'bar-3': { score: 7, color: '#d4974a' },
+      'bar-4': { score: 3, color: '#e05252' },
+      'bar-5': { score: 3, color: '#58a6ff' },
+    };
+    Object.entries(barData).forEach(([id, { score, color }]) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      for (let i = 0; i < 10; i++) {
+        const seg = document.createElement('div');
+        seg.className = 'era-bar-seg';
+        seg.style.background = i < score ? color : '#21262d';
+        seg.style.opacity = i < score ? '1' : '0.4';
+        el.appendChild(seg);
+      }
+    });
+  }
+
+  // Scroll-triggered bar animations
+  function animateBars() {
+    const fills = document.querySelectorAll('.sw-bar-fill');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.width = e.target.getAttribute('data-width') || e.target.style.width;
+        }
+      });
+    }, { threshold: 0.1 });
+    fills.forEach(f => {
+      f.setAttribute('data-width', f.style.width);
+      f.style.width = '0%';
+      observer.observe(f);
+    });
+  }
+
+  // Active nav highlight on scroll
+  function setupNav() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('nav a[href^="#"]');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(a => {
+            a.style.color = a.getAttribute('href') === '#' + e.target.id ? 'var(--text)' : '';
+            a.style.borderBottomColor = a.getAttribute('href') === '#' + e.target.id ? 'var(--orange)' : 'transparent';
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+    sections.forEach(s => obs.observe(s));
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    renderBars();
+    animateBars();
+    setupNav();
+  });
+</script>
+</body>
+</html>
