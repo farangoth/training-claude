@@ -3,10 +3,10 @@ import re, subprocess, sys, os
 with open('training-plan.jsx', 'r', encoding='utf-8') as f:
     jsx = f.read()
 
-lines = jsx.split('\n')
-body_lines = [line for line in lines if not line.startswith('import ')]
-jsx_body = '\n'.join(body_lines)
+# 1. Strip ALL import lines
+jsx_body = '\n'.join(l for l in jsx.split('\n') if not l.startswith('import '))
 
+# 2. Swap localStorage for in-memory window store
 jsx_body = jsx_body.replace(
     'const STORAGE_KEY = "clement_training_v2";',
     'const STORAGE_KEY = "clement_training_v2";\nif (!window._trainingStore) window._trainingStore = {};'
@@ -21,18 +21,28 @@ jsx_body = re.sub(
     'function saveState(s) {\n  try { window._trainingStore[STORAGE_KEY] = JSON.stringify(s); } catch {}\n}',
     jsx_body
 )
+
+# 3. Remove export default
 jsx_body = jsx_body.replace('export default function App() {', 'function App() {')
+
+# 4. Prepend React hook globals (var avoids const redeclaration under strict Babel)
 jsx_body = '/* React globals from CDN */\nvar useState = React.useState;\nvar useEffect = React.useEffect;\n\n' + jsx_body
+
+# 5. Add render call
 jsx_body += "\n\nReactDOM.render(React.createElement(App, null), document.getElementById('root'));"
 
 with open('/tmp/_training_plan_input.jsx', 'w', encoding='utf-8') as f:
     f.write(jsx_body)
 
+# 6. Babel config: classic JSX runtime, modern browser targets (Chrome/FF/Safari 90+)
 with open('/tmp/babel.config.json', 'w') as f:
-    f.write('{"presets":[["@babel/preset-react",{"runtime":"classic"}],["@babel/preset-env",{"targets":{"browsers":">0.5%, not dead"},"modules":false}]]}')
+    f.write('{"presets":[["@babel/preset-react",{"runtime":"classic"}],["@babel/preset-env",{"targets":{"chrome":"90","firefox":"90","safari":"14"},"modules":false}]]}')
 
-print('Compiling JSX...')
-babel_bin = next((b for b in ['node_modules/.bin/babel'] if os.path.exists(b)), None)
+print('Compiling JSX with Babel...')
+babel_bin = next(
+    (b for b in ['node_modules/.bin/babel', os.path.expanduser('~/.npm-global/bin/babel')]
+     if os.path.exists(b)), None
+)
 if not babel_bin:
     print('ERROR: babel not found'); sys.exit(1)
 
@@ -47,6 +57,7 @@ if result.returncode != 0:
 
 with open('/tmp/_training_plan_compiled.js', 'r', encoding='utf-8') as f:
     compiled_js = f.read()
+
 compiled_js = re.sub(r'^export\s+', '', compiled_js, flags=re.MULTILINE)
 print(f'Compiled: {len(compiled_js.encode())//1024} KB')
 
