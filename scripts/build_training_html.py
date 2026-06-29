@@ -38,29 +38,36 @@ jsx_body += '\n\nconst { useState, useEffect } = React;\nReactDOM.render(<App />
 with open('/tmp/_training_plan_input.jsx', 'w', encoding='utf-8') as f:
     f.write(jsx_body)
 
-# ── 5. Compile JSX → plain JS via Babel CLI ───────────────────────────────────
-print('Compiling JSX with Babel...')
+# ── 5. Compile JSX → plain JS via Babel ──────────────────────────────────────
+print('Compiling JSX with Babel (preset-react + preset-env)...')
+
+# Find babel binary
+babel_candidates = ['node_modules/.bin/babel', '/usr/local/bin/babel']
+babel_bin = next((b for b in babel_candidates if os.path.exists(b)), None)
+if not babel_bin:
+    print('ERROR: babel not found')
+    sys.exit(1)
+
 result = subprocess.run(
     [
-        'node_modules/.bin/babel',
+        babel_bin,
         '/tmp/_training_plan_input.jsx',
-        '--presets', '@babel/preset-react',
+        '--presets', '@babel/preset-react,@babel/preset-env',
         '--out-file', '/tmp/_training_plan_compiled.js',
         '--no-babelrc',
     ],
     capture_output=True, text=True
 )
 if result.returncode != 0:
-    print('Babel error:', result.stderr)
+    print('Babel error:', result.stderr[:2000])
     sys.exit(1)
-print('Babel compilation successful.')
 
 with open('/tmp/_training_plan_compiled.js', 'r', encoding='utf-8') as f:
     compiled_js = f.read()
 
-print(f'Compiled JS size: {len(compiled_js):,} chars')
+print(f'Compiled JS: {len(compiled_js):,} chars ({len(compiled_js)//1024} KB)')
 
-# ── 6. Assemble final HTML ────────────────────────────────────────────────────
+# ── 6. Assemble final HTML — no Babel runtime needed ─────────────────────────
 html = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,4 +102,4 @@ html = """<!DOCTYPE html>
 with open('training-plan.html', 'w', encoding='utf-8') as f:
     f.write(html)
 
-print(f'Built training-plan.html ({len(html):,} chars)')
+print(f'Built training-plan.html ({len(html):,} chars / {len(html)//1024} KB)')
