@@ -297,7 +297,7 @@ var WEEKS = [
       { day: "Fri", date: "14 Aug", label: "Race Eve", type: "rest", emoji: "PRE", summary: "Kit check - Early bed", tag: "PRE-RACE", tagColor: "#f97316", preDetail: { title: "Race Eve Protocol", duration: "10 min shakeout walk only", distance: "under 1 km", elevation: "---", keyFocus: "Lay out every piece of kit. Confirm mandatory gear. Dinner at 6pm. In bed by 9pm. Trust the training." } },
       { day: "Sat", date: "15 Aug", label: "RACE DAY", type: "long", emoji: "RACE", summary: "38 km - 3,150 m+ - Snowdon SkyRace", tag: "RACE", tagColor: "#f97316", preDetail: { title: "Snowdon SkyRace - Race Day", duration: "Target: finish strong", distance: "38 km", elevation: "3,150 m+", hrTarget: "Climbs: up to 163 bpm. Flats: 145-155. Descents: controlled, protect ITB.", shoes: "Merrell MTL Long Sky", pack: "Mandatory kit + race vest", terrain: "Technical mountain trail - Snowdonia. Rocky ridgelines, sustained ascents, technical descents.", keyFocus: "You have done the work. Run your plan. Hike the steep stuff. Eat every 40 min. Enjoy the mountains." } }
     ]
-  }
+  },
 
   // ─── POST-RACE BLOCK ──────────────────────────────────────────────────────
   {
