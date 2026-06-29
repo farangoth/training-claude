@@ -3,18 +3,10 @@ import re, subprocess, sys, os
 with open('training-plan.jsx', 'r', encoding='utf-8') as f:
     jsx = f.read()
 
-# ── 1. Strip ES module imports ────────────────────────────────────────────────
 lines = jsx.split('\n')
-body_lines = []
-skip = True
-for line in lines:
-    if skip and line.startswith('import '):
-        continue
-    skip = False
-    body_lines.append(line)
+body_lines = [line for line in lines if not line.startswith('import ')]
 jsx_body = '\n'.join(body_lines)
 
-# ── 2. Swap localStorage for in-memory window store ───────────────────────────
 jsx_body = jsx_body.replace(
     'const STORAGE_KEY = "clement_training_v2";',
     'const STORAGE_KEY = "clement_training_v2";\nif (!window._trainingStore) window._trainingStore = {};'
@@ -29,45 +21,35 @@ jsx_body = re.sub(
     'function saveState(s) {\n  try { window._trainingStore[STORAGE_KEY] = JSON.stringify(s); } catch {}\n}',
     jsx_body
 )
-
-# ── 3. Remove export default, add ReactDOM.render ────────────────────────────
 jsx_body = jsx_body.replace('export default function App() {', 'function App() {')
-jsx_body += '\n\nconst { useState, useEffect } = React;\nReactDOM.render(<App />, document.getElementById(\'root\'));'
+jsx_body = '/* React globals from CDN */\nvar useState = React.useState;\nvar useEffect = React.useEffect;\n\n' + jsx_body
+jsx_body += "\n\nReactDOM.render(React.createElement(App, null), document.getElementById('root'));"
 
-# ── 4. Write JSX to temp file ─────────────────────────────────────────────────
 with open('/tmp/_training_plan_input.jsx', 'w', encoding='utf-8') as f:
     f.write(jsx_body)
 
-# ── 5. Compile JSX → plain JS via Babel ──────────────────────────────────────
-print('Compiling JSX with Babel (preset-react + preset-env)...')
+with open('/tmp/babel.config.json', 'w') as f:
+    f.write('{"presets":[["@babel/preset-react",{"runtime":"classic"}],["@babel/preset-env",{"targets":{"browsers":">0.5%, not dead"},"modules":false}]]}')
 
-# Find babel binary
-babel_candidates = ['node_modules/.bin/babel', '/usr/local/bin/babel']
-babel_bin = next((b for b in babel_candidates if os.path.exists(b)), None)
+print('Compiling JSX...')
+babel_bin = next((b for b in ['node_modules/.bin/babel'] if os.path.exists(b)), None)
 if not babel_bin:
-    print('ERROR: babel not found')
-    sys.exit(1)
+    print('ERROR: babel not found'); sys.exit(1)
 
 result = subprocess.run(
-    [
-        babel_bin,
-        '/tmp/_training_plan_input.jsx',
-        '--presets', '@babel/preset-react,@babel/preset-env',
-        '--out-file', '/tmp/_training_plan_compiled.js',
-        '--no-babelrc',
-    ],
+    [babel_bin, '/tmp/_training_plan_input.jsx',
+     '--config-file', '/tmp/babel.config.json',
+     '--out-file', '/tmp/_training_plan_compiled.js'],
     capture_output=True, text=True
 )
 if result.returncode != 0:
-    print('Babel error:', result.stderr[:2000])
-    sys.exit(1)
+    print(result.stderr[:3000]); sys.exit(1)
 
 with open('/tmp/_training_plan_compiled.js', 'r', encoding='utf-8') as f:
     compiled_js = f.read()
+compiled_js = re.sub(r'^export\s+', '', compiled_js, flags=re.MULTILINE)
+print(f'Compiled: {len(compiled_js.encode())//1024} KB')
 
-print(f'Compiled JS: {len(compiled_js):,} chars ({len(compiled_js)//1024} KB)')
-
-# ── 6. Assemble final HTML — no Babel runtime needed ─────────────────────────
 html = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,14 +59,14 @@ html = """<!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <style>
-  * { box-sizing: border-box; }
-  body { margin: 0; padding: 0; background: #080b12; }
-  #root { min-height: 100vh; }
-  input, textarea, button, select { font-family: inherit; }
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: #0d1018; }
-  ::-webkit-scrollbar-thumb { background: #1e2535; border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: #2d3748; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0; background: #080b12; }
+#root { min-height: 100vh; }
+input, textarea, button, select { font-family: inherit; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0d1018; }
+::-webkit-scrollbar-thumb { background: #1e2535; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #2d3748; }
 </style>
 </head>
 <body>
@@ -101,5 +83,4 @@ html = """<!DOCTYPE html>
 
 with open('training-plan.html', 'w', encoding='utf-8') as f:
     f.write(html)
-
-print(f'Built training-plan.html ({len(html):,} chars / {len(html)//1024} KB)')
+print(f'Built: {len(html.encode())//1024} KB')
