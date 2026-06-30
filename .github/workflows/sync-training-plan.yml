@@ -1,9 +1,11 @@
-name: Sync Training Plan HTML
+name: Sync Training Plan HTML (manual fallback)
 
+# Disabled from auto-trigger on push — the primary build+deploy path is now
+# the Claude Code "training-plan-deploy" skill, which compiles JSX -> HTML
+# locally and pushes both files directly via the GitHub API.
+# This workflow is kept as a manual fallback only.
 on:
-  push:
-    paths:
-      - 'training-plan.jsx'
+  workflow_dispatch:
 
 jobs:
   build:
