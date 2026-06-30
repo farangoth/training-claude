@@ -1181,8 +1181,98 @@ function CountdownBadge() {
   );
 }
 
-export default function App() {
+export default function OverviewPage(props) {
+  var weeks = props.weeks;
+  var onSelectWeek = props.onSelectWeek;
+  var sessions = props.sessions;
+
+  function weekCompletion(w) {
+    var total = w.days.filter(function(d) { return d.type !== "rest"; }).length;
+    if (total === 0) return 0;
+    var done = w.days.filter(function(d) {
+      var key = "w" + w.number + "_" + d.day + d.date;
+      return d.type !== "rest" && (sessions[key] || d.type === "done");
+    }).length;
+    return Math.round((done / total) * 100);
+  }
+
+  var grouped = {};
+  weeks.forEach(function(w) {
+    var label = PHASE_LABELS[w.phase - 1];
+    if (!grouped[label]) grouped[label] = [];
+    grouped[label].push(w);
+  });
+
+  return (
+    <div>
+      <div style={{ background: "#0d111a", border: "1px solid #1a2030", borderRadius: 10, padding: "1.1rem 1.4rem", marginBottom: "1.5rem" }}>
+        <div style={{ fontSize: "0.58rem", color: "#f97316", letterSpacing: "0.12em", fontFamily: "monospace", fontWeight: 700, marginBottom: 8 }}>27-WEEK BLOCK OVERVIEW</div>
+        <p style={{ margin: 0, fontSize: "0.82rem", color: "#94a3b8", lineHeight: 1.7 }}>
+          Snowdon SkyRace (15 Aug 2026) &rarr; full recovery &rarr; base build &rarr; sharpening &rarr; Sheffield&rarr;New Mills adventure (1 Jan 2027). Tap any week to jump to its detail.
+        </p>
+        <div style={{ display: "flex", gap: "1.2rem", marginTop: "0.9rem", flexWrap: "wrap" }}>
+          {[
+            ["Total weeks", weeks.length],
+            ["Phases", PHASE_LABELS.length],
+            ["Block start", weeks[0] ? weeks[0].dates.split(" - ")[0].split(" \u2013 ")[0] : "-"],
+            ["Block end", weeks[weeks.length - 1] ? weeks[weeks.length - 1].dates.split(" \u2013 ").pop() : "-"],
+          ].map(function(p) {
+            return (
+              <div key={p[0]}>
+                <div style={{ fontSize: "0.52rem", color: "#475569", fontFamily: "monospace", letterSpacing: "0.07em" }}>{p[0]}</div>
+                <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#f1f5f9" }}>{p[1]}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {PHASE_LABELS.map(function(label, phaseIdx) {
+        var phaseWeeks = grouped[label];
+        if (!phaseWeeks || phaseWeeks.length === 0) return null;
+        var pc = PHASE_COLORS[phaseIdx];
+        return (
+          <div key={label} style={{ marginBottom: "1.6rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.7rem" }}>
+              <div style={{ width: 8, height: 8, borderRadius: "50%", background: pc }} />
+              <span style={{ fontSize: "0.68rem", fontWeight: 700, color: pc, fontFamily: "monospace", letterSpacing: "0.08em", textTransform: "uppercase" }}>{label}</span>
+              <span style={{ fontSize: "0.6rem", color: "#475569", fontFamily: "monospace" }}>
+                {"Weeks " + phaseWeeks[0].number + "\u2013" + phaseWeeks[phaseWeeks.length - 1].number}
+              </span>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "0.7rem" }}>
+              {phaseWeeks.map(function(w) {
+                var pct = weekCompletion(w);
+                return (
+                  <button key={w.number} onClick={function() { onSelectWeek(weeks.indexOf(w)); }}
+                    style={{ all: "unset", cursor: "pointer", textAlign: "left", background: "#0d111a", border: "1px solid " + pc + "30", borderRadius: 9, padding: "0.85rem 1rem", transition: "all 0.15s ease" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
+                      <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#f1f5f9", fontFamily: "monospace" }}>W{w.number}</span>
+                      <span style={{ fontSize: "0.55rem", color: "#475569", fontFamily: "monospace" }}>{w.dates}</span>
+                    </div>
+                    <div style={{ fontSize: "0.78rem", color: pc, fontWeight: 600, marginBottom: 6 }}>{w.block}</div>
+                    <div style={{ display: "flex", gap: "0.5rem", fontSize: "0.6rem", color: "#64748b", fontFamily: "monospace", marginBottom: 8 }}>
+                      <span>{w.totalKm}</span>
+                      <span>&middot;</span>
+                      <span>{w.totalElev}</span>
+                    </div>
+                    <div style={{ height: 4, borderRadius: 99, background: "#1a2030", overflow: "hidden" }}>
+                      <div style={{ width: pct + "%", height: "100%", background: pc, borderRadius: 99 }} />
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function App() {
   var [weekIdx, setWeekIdx] = useState(0);
+  var [view, setView] = useState("overview"); // "overview" | "week"
   var [selected, setSelected] = useState(null);
   var [sessions, setSessions] = useState({});
   var [sessionsSha, setSessionsSha] = useState(null);
@@ -1220,6 +1310,8 @@ export default function App() {
       }
     })();
   }, []);
+
+  function goToWeek(idx) { setWeekIdx(idx); setView("week"); }
 
   var week = WEEKS[weekIdx];
   var phaseColor = PHASE_COLORS[week.phase - 1];
@@ -1271,6 +1363,11 @@ export default function App() {
         <CountdownBadge />
       </div>
 
+      <div style={{ display: "flex", gap: "0.4rem", marginBottom: "1.1rem" }}>
+        <button onClick={function() { setView("overview"); }} style={{ all: "unset", cursor: "pointer", padding: "0.4rem 0.9rem", borderRadius: 7, fontSize: "0.62rem", fontFamily: "monospace", fontWeight: 700, letterSpacing: "0.06em", border: "1px solid " + (view === "overview" ? "#f97316" : "#1e2535"), background: view === "overview" ? "#f9731618" : "transparent", color: view === "overview" ? "#f97316" : "#475569" }}>OVERVIEW</button>
+        <button onClick={function() { setView("week"); }} style={{ all: "unset", cursor: "pointer", padding: "0.4rem 0.9rem", borderRadius: 7, fontSize: "0.62rem", fontFamily: "monospace", fontWeight: 700, letterSpacing: "0.06em", border: "1px solid " + (view === "week" ? "#f97316" : "#1e2535"), background: view === "week" ? "#f9731618" : "transparent", color: view === "week" ? "#f97316" : "#475569" }}>WEEK DETAIL</button>
+      </div>
+
       <div style={{ display: "flex", gap: "0.4rem", marginBottom: "0.6rem" }}>
         {PHASE_LABELS.map(function(l, i) {
           var bg = week.phase - 1 === i ? PHASE_COLORS[i] : week.phase - 1 > i ? PHASE_COLORS[i] + "60" : "#1e2535";
@@ -1283,6 +1380,12 @@ export default function App() {
         })}
       </div>
 
+      {view === "overview" && (
+        <OverviewPage weeks={WEEKS} sessions={sessions} onSelectWeek={goToWeek} />
+      )}
+
+      {view === "week" && (
+      <React.Fragment>
       <WeekSelector weeks={WEEKS} currentIdx={weekIdx} onSelect={setWeekIdx} />
       <ProgressBar days={week.days} weekSessions={weekSessions} />
 
@@ -1323,10 +1426,12 @@ export default function App() {
           <div>
             <div style={{ fontSize: "0.58rem", color: "#f97316", fontFamily: "monospace", letterSpacing: "0.07em" }}>TARGET</div>
             <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#f1f5f9" }}>Snowdon SkyRace - 15 Aug 2026 - 38 km / 3,150 m+</div>
-            <div style={{ fontSize: "0.65rem", color: "#475569", fontFamily: "monospace" }}>Week {week.number} of 7 - {PHASE_LABELS[week.phase - 1]}</div>
+            <div style={{ fontSize: "0.65rem", color: "#475569", fontFamily: "monospace" }}>Week {week.number} of {WEEKS.length} - {PHASE_LABELS[week.phase - 1]}</div>
           </div>
         </div>
       </div>
+      </React.Fragment>
+      )}
 
       {selected && (
         <DayModal
